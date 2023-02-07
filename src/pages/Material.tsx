@@ -1,4 +1,6 @@
-import { ImageList, ImageListItem } from '@mui/material'
+import { Container, ImageList, ImageListItem, Tooltip, IconButton, Box } from '@mui/material'
+import { StarOutline } from '@mui/icons-material';
+// full of icons: https://mui.com/material-ui/material-icons/
 
 export default function Material() {
   let img_list: string[] = []
@@ -14,11 +16,23 @@ export default function Material() {
   }
 
   return (
-    <>
-      <h1>Material</h1>
-      <ImageList variant="masonry" cols={3} gap={8}>
+    <Container maxWidth="md">
+      <ImageList variant="masonry" cols={4} gap={8}>
         {img_list.map((img) => (
           <ImageListItem key={img}>
+            <Box
+              sx={{
+                position: 'absolute',
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <Tooltip title="collect">
+                <IconButton>
+                  <StarOutline />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <img
               src={`${img}?w=161&crop&auto=format`}
               srcSet={`${img}?w=161&&auto=format&dpr=2 2x`}
@@ -28,6 +42,6 @@ export default function Material() {
           </ImageListItem>
         ))}
       </ImageList>
-    </>
+    </Container>
   )
 }
