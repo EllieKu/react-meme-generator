@@ -1,5 +1,6 @@
 import { Container, ImageList, ImageListItem, Tooltip, IconButton, Box } from '@mui/material'
 import { StarOutline } from '@mui/icons-material';
+import '../assets/css/global.css'
 // full of icons: https://mui.com/material-ui/material-icons/
 
 export default function Material() {
@@ -17,7 +18,7 @@ export default function Material() {
 
   return (
     <Container maxWidth="md">
-      <ImageList variant="masonry" cols={4} gap={8}>
+      <ImageList variant="masonry" cols={6} gap={8}>
         {img_list.map((img) => (
           <ImageListItem key={img}>
             <Box
@@ -28,7 +29,7 @@ export default function Material() {
               }}
             >
               <Tooltip title="collect">
-                <IconButton>
+                <IconButton >
                   <StarOutline />
                 </IconButton>
               </Tooltip>
