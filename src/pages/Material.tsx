@@ -17,7 +17,7 @@ export default function Material() {
 
   return (
     <Container maxWidth="md">
-      <ImageList variant="masonry" cols={4} gap={8}>
+      <ImageList variant="masonry" cols={6} gap={8}>
         {img_list.map((img) => (
           <ImageListItem key={img}>
             <Box

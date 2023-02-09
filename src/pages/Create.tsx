@@ -1,6 +1,20 @@
 function Create() {
+  const file = document.getElementById('fileItem') as HTMLElement
+
+  function upload(e) {
+    console.log(e.target.files[0])
+  }
+
   return (
-    <div>Create</div>
+    <>
+      <img id="previewImage" src="" alt="Image Preview"/>
+      <input
+        type="file"
+        id="fileItem"
+        accept="image/*"
+        onChange={(e) => upload(e)}
+      />
+    </>
   )
 }
 
