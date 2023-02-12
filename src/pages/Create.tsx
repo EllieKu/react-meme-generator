@@ -1,19 +1,38 @@
+import { useState, useRef, ChangeEvent } from "react"
 function Create() {
-  const file = document.getElementById('fileItem') as HTMLElement
+  const [src, setSrc] = useState("")
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  function upload(e) {
-    console.log(e.target.files[0])
+  function upload(event: ChangeEvent): void {
+    const fileList = (event.target as HTMLInputElement).files as FileList
+    const file: File = fileList[0]
+
+    setSrc(window.URL.createObjectURL(file))
+  }
+
+  function loaded(): void {
+    window.URL.revokeObjectURL(src)
+  }
+
+  function click(): void {
+    inputRef.current!.click()
   }
 
   return (
     <>
-      <img id="previewImage" src="" alt="Image Preview"/>
+      <img
+        src={src}
+        alt="Image Preview"
+        onLoad={() => loaded()}
+      />
       <input
         type="file"
-        id="fileItem"
         accept="image/*"
+        ref={inputRef}
         onChange={(e) => upload(e)}
+        style={{display: 'none'}}
       />
+      <button onClick={() => click()}>上傳</button>
     </>
   )
 }
