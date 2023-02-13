@@ -2,10 +2,12 @@
 
 Create a meme 😆
 
-#### Stack
+## Stack
 
 - React
 - TypeScript
+- React Draggable
+- Tailwind
 
 ***
 

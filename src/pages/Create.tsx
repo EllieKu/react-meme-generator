@@ -1,4 +1,6 @@
 import { useState, useRef, ChangeEvent } from "react"
+import Draggable from 'react-draggable'
+
 function Create() {
   const [src, setSrc] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -20,11 +22,17 @@ function Create() {
 
   return (
     <>
-      <img
-        src={src}
-        alt="Image Preview"
-        onLoad={() => loaded()}
-      />
+      <div className="box-border h-56 w-56 border-4 overflow-hidden">
+        <div className="h-96 w-96">
+          <Draggable bounds="parent">
+            <img
+              src={src}
+              alt="Image Preview"
+              onLoad={() => loaded()}
+            />
+          </Draggable>
+        </div>
+      </div>
       <input
         type="file"
         accept="image/*"
