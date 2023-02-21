@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream
-function Create() {
-  function upload() {
-    const file = document.getElementById('fileItem') as HTMLElement
-    console.log(file)
-  }
-
-  return (
-    <>
-      <div>圖片框</div>
-=======
 import { useState, useRef, ChangeEvent } from "react"
 import DraggableText from '../components/DraggableText'
 import DraggableImage from '../components/DraggableImage'
@@ -37,16 +26,12 @@ export default function Create() {
           <DraggableText value="父層2"/>
         </div>
       </div>
->>>>>>> Stashed changes
       <input
         type="file"
         id="fileItem"
         accept="image/*"
         onChange={() => upload()}
       />
-<<<<<<< Updated upstream
-    </>
-=======
       <button
         className="w-14 bg-emerald-500"
         onClick={() => click()}
@@ -54,6 +39,5 @@ export default function Create() {
         上傳
       </button>
     </div>
->>>>>>> Stashed changes
   )
 }
