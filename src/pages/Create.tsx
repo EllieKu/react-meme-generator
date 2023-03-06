@@ -1,8 +1,9 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from "react"
 import DraggableText from '../components/DraggableText'
 import DraggableImage from '../components/DraggableImage'
-import { FormControl, MenuItem, TextField } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { FormControl, MenuItem, Select, TextField } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
+import Grid from '@mui/material/Unstable_Grid2';
 
 const config = {
   content: '範例文字',
@@ -26,6 +27,14 @@ type Setting = {
   content:string,
   fontFamily:string
   color:string,
+}
+
+const Row = ({children}) => {
+  return (
+    <Grid xs display="flex" justifyContent="flex-start" alignItems="center">
+      {children}
+    </Grid>
+  )
 }
 
 const TextSetting = (
@@ -53,8 +62,8 @@ const TextSetting = (
   }, [color, content, fontFamily])
 
   return (
-    <>
-      <div className="flex flex-row mb-2 items-center">
+    <Grid>
+      <Row>
         <label className="pr-3 basis-24">內容</label>
         <TextField
           id="standard-basic"
@@ -62,8 +71,8 @@ const TextSetting = (
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-      </div>
-      <div className="flex flex-row mb-2 items-center">
+      </Row>
+      <Row>
         <label className="pr-3 basis-24">字型</label>
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <Select
@@ -83,22 +92,22 @@ const TextSetting = (
             }
           </Select>
         </FormControl>
-      </div>
-      <div className="flex flex-row mb-2">
+      </Row>
+      <Row>
         <label className="pr-3 basis-24">顏色</label>
         <input
           type="color"
           value={color}
           onChange={(e) => setColor(e.target.value)}
         />
-      </div>
-    </>
+      </Row>
+    </Grid>
   )
 }
 
 export default function Create() {
   const [imgSrc, setImgSrc] = useState("")
-  const [textSetting, setTextSetting] = useState({
+  const [params, setParams] = useState({
     content: config.content,
     fontFamily: config.fontFamily[0].value,
     color: config.color
@@ -117,7 +126,12 @@ export default function Create() {
   }
 
   const changeTextSetting = (newSetting:Setting) => {
-    setTextSetting(newSetting)
+    setParams((prev) => {
+      return {
+        ...prev,
+        ...newSetting
+      }
+    })
   }
 
   return (
@@ -127,9 +141,9 @@ export default function Create() {
           <div className="h-96 w-96 relative object-center">
             <DraggableImage value={imgSrc} />
             <DraggableText
-              content={textSetting.content}
-              fontFamily={textSetting.fontFamily}
-              color={textSetting.color}
+              content={params.content}
+              fontFamily={params.fontFamily}
+              color={params.color}
             />
           </div>
           <input
@@ -147,9 +161,9 @@ export default function Create() {
       </section>
       <section className="pr-4 pl-4 grow">
         <TextSetting
-          content={textSetting.content}
-          fontFamily={textSetting.fontFamily}
-          color={textSetting.color}
+          content={params.content}
+          fontFamily={params.fontFamily}
+          color={params.color}
           changeText={changeTextSetting}
         />
       </section>
