@@ -18,6 +18,8 @@ const config = {
     },
   ],
   color: '#000000',
+  width: 300,
+  height: 200,
 }
 
 interface TextSettingProps extends Setting{
@@ -103,6 +105,8 @@ export default function Create() {
     content: config.content,
     fontFamily: config.fontFamily[0].value,
     color: config.color,
+    width: config.width,
+    height: config.height,
   })
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -140,6 +144,14 @@ export default function Create() {
     } else if (e.target.id === 'param-color') {
       newParam = {
         color: e.target.value
+      }
+    } else if (e.target.id === 'param-height') {
+      newParam = {
+        height: e.target.value
+      }
+    } else if (e.target.id === 'param-width') {
+      newParam = {
+        width: e.target.value
       }
     }
 
@@ -187,6 +199,33 @@ export default function Create() {
           changeSetting={changeParam}
           changeFont={changeFontFamily}
         />
+        <Row>
+          <label className="pr-3 basis-24">圖片尺寸</label>
+          <FormControl
+            sx={{ mr: 3, width: 120 }}
+            variant="standard"
+          >
+            <Input
+              id="param-width"
+              startAdornment={<InputAdornment position="start">寬</InputAdornment>}
+              endAdornment={<InputAdornment position="end">px</InputAdornment>}
+              value={params.width}
+              onChange={(e) => changeParam(e)}
+            />
+          </FormControl>
+          <FormControl
+            sx={{ width: 120 }}
+            variant="standard"
+          >
+            <Input
+              id="param-height"
+              startAdornment={<InputAdornment position="start">高</InputAdornment>}
+              endAdornment={<InputAdornment position="end">px</InputAdornment>}
+              value={params.height}
+              onChange={(e) => changeParam(e)}
+            />
+          </FormControl>
+        </Row>
       </section>
     </div>
   )
