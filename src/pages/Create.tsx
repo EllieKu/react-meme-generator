@@ -1,7 +1,7 @@
-import React, { useState, useRef, ChangeEvent, useEffect } from "react"
+import React, { ChangeEvent, ReactNode, useState, useRef, useEffect } from "react"
 import DraggableText from '../components/DraggableText'
 import DraggableImage from '../components/DraggableImage'
-import { FormControl, MenuItem, Select, TextField } from '@mui/material';
+import { Button, FormControl, Input, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
 
@@ -17,10 +17,13 @@ const config = {
       value: "cursive"
     },
   ],
-  color: '#000000'
+  color: '#000000',
 }
+
 interface TextSettingProps extends Setting{
-  changeText: (newSetting: Setting) => void
+  changeSetting: (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  changeFont: (e:SelectChangeEvent) => void
+
 }
 
 type Setting = {
@@ -29,57 +32,45 @@ type Setting = {
   color:string,
 }
 
-const Row = ({children}) => {
+interface RowProps {
+  children: ReactNode,
+}
+
+const Row = ({ children }:RowProps) => {
   return (
-    <Grid xs display="flex" justifyContent="flex-start" alignItems="center">
+    <div className="flex flex-row items-center mb-2">
       {children}
-    </Grid>
+    </div>
   )
 }
 
 const TextSetting = (
   {
-    color:colorProps,
-    content: contentProps,
-    fontFamily: fontFamilyProps,
-    changeText
+    color,
+    content,
+    fontFamily,
+    changeSetting,
+    changeFont
   }: TextSettingProps
 ) => {
-  const [content, setContent] = useState(contentProps)
-  const [color, setColor] = useState(colorProps)
-  const [fontFamily, setFontFamily] = useState(fontFamilyProps);
-
-  const changeFontFamily = (event: SelectChangeEvent) => {
-    setFontFamily(event.target.value as string);
-  };
-
-  useEffect(() => {
-    changeText({
-      color,
-      content,
-      fontFamily,
-    })
-  }, [color, content, fontFamily])
 
   return (
     <Grid>
       <Row>
         <label className="pr-3 basis-24">內容</label>
         <TextField
-          id="standard-basic"
+          id="param-content"
           variant="standard"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => changeSetting(e)}
         />
       </Row>
       <Row>
         <label className="pr-3 basis-24">字型</label>
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
             value={fontFamily}
-            onChange={changeFontFamily}
+            onChange={(e) => changeFont(e)}
             sx={{padding: 'unset'}}
           >
             {
@@ -96,9 +87,10 @@ const TextSetting = (
       <Row>
         <label className="pr-3 basis-24">顏色</label>
         <input
+          id="param-color"
           type="color"
           value={color}
-          onChange={(e) => setColor(e.target.value)}
+          onChange={(e) => changeSetting(e)}
         />
       </Row>
     </Grid>
@@ -110,7 +102,7 @@ export default function Create() {
   const [params, setParams] = useState({
     content: config.content,
     fontFamily: config.fontFamily[0].value,
-    color: config.color
+    color: config.color,
   })
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -125,11 +117,36 @@ export default function Create() {
     inputRef.current!.click()
   }
 
-  const changeTextSetting = (newSetting:Setting) => {
+  const changeFontFamily = (e: SelectChangeEvent) => {
+    const newParam = {
+      fontFamily: e.target.value
+    }
+
     setParams((prev) => {
       return {
         ...prev,
-        ...newSetting
+        ...newParam
+      }
+    })
+  }
+
+  const changeParam = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let newParam = {}
+
+    if (e.target.id === 'param-content') {
+      newParam = {
+        content: e.target.value
+      }
+    } else if (e.target.id === 'param-color') {
+      newParam = {
+        color: e.target.value
+      }
+    }
+
+    setParams((prev) => {
+      return {
+        ...prev,
+        ...newParam
       }
     })
   }
@@ -155,16 +172,20 @@ export default function Create() {
             style={{display: 'none'}}
           />
         </div>
-        <button className="w-14 bg-500" onClick={() => invokeInput()}>
+        <Button
+          variant="contained"
+          onClick={() => invokeInput()}
+        >
           上傳
-        </button>
+        </Button>
       </section>
       <section className="pr-4 pl-4 grow">
         <TextSetting
           content={params.content}
           fontFamily={params.fontFamily}
           color={params.color}
-          changeText={changeTextSetting}
+          changeSetting={changeParam}
+          changeFont={changeFontFamily}
         />
       </section>
     </div>
