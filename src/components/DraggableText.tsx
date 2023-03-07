@@ -27,7 +27,6 @@ export default function DraggableText({ content, fontFamily, color }: DraggableT
 
   return (
     <Draggable
-      bounds="parent"
       nodeRef={nodeRef}
       onStart={() => onStart()}
       onStop={() => onStop()}
@@ -36,8 +35,8 @@ export default function DraggableText({ content, fontFamily, color }: DraggableT
         className="absolute cursor-move text"
         ref={nodeRef}
         css={css`
-         color: ${colorProps};
-         font-family: ${fontFamily};
+          color: ${colorProps};
+          font-family: ${fontFamily};
         `}
       >
         {content}

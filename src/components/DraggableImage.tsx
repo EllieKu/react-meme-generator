@@ -31,7 +31,6 @@ export default function DraggableImage({ value }: DraggableImageProps) {
 
   return (
     <Draggable
-      bounds="parent"
       nodeRef={nodeRef}
       onStart={() => onStart()}
       onStop={() => onStop()}
