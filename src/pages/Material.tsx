@@ -1,4 +1,5 @@
-import React, { Container, ImageList, ImageListItem, Tooltip, IconButton, Box } from '@mui/material'
+import React from 'react';
+import { Container, ImageList, ImageListItem, Tooltip, IconButton, Box } from '@mui/material'
 import { StarOutline } from '@mui/icons-material';
 // full of icons: https://mui.com/material-ui/material-icons/
 
@@ -16,7 +17,12 @@ export default function Material() {
   }
 
   return (
-    <Container maxWidth="md">
+    <Container
+      maxWidth="lg"
+      sx={{
+        paddingTop: '40px',
+      }}
+    >
       <ImageList variant="masonry" cols={6} gap={8}>
         {img_list.map((img) => (
           <ImageListItem key={img}>

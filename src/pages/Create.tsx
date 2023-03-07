@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ReactNode, useState, useRef } from "react"
 import DraggableText from '../components/DraggableText'
 import DraggableImage from '../components/DraggableImage'
-import { Button, FormControl, Input, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
+import { Button, Container, FormControl, Input, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
 
@@ -126,7 +126,12 @@ export default function Create() {
   }
 
   return (
-    <div className="container flex m-5">
+    <Container
+      maxWidth="lg"
+      sx={{
+        paddingTop: '40px',
+      }}
+    >
       <section>
         <div className="box-border h-56 w-56 border-4 overflow-hidden static">
           <div className="h-96 w-96 relative object-center">
@@ -188,6 +193,6 @@ export default function Create() {
           </FormControl>
         </Row>
       </section>
-    </div>
+    </Container>
   )
 }
