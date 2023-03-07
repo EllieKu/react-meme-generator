@@ -132,9 +132,9 @@ export default function Create() {
         paddingTop: '40px',
       }}
     >
-      <section>
-        <div className="box-border h-56 w-56 border-4 overflow-hidden static">
-          <div className="h-96 w-96 relative object-center">
+      <Grid container spacing={2}>
+        <Grid sm={10} md={6}>
+          <div className="box-border h-56 w-56 border-4 overflow-hidden relative">
             <DraggableImage value={imgSrc} />
             <DraggableText
               content={params.content}
@@ -150,49 +150,49 @@ export default function Create() {
             onChange={(e) => upload(e)}
             style={{display: 'none'}}
           />
-        </div>
-        <Button
-          variant="contained"
-          onClick={() => invokeInput()}
-        >
-          上傳
-        </Button>
-      </section>
-      <section className="pr-4 pl-4 grow">
-        <TextSetting
-          content={params.content}
-          fontFamily={params.fontFamily}
-          color={params.color}
-          changeSetting={changeParam}
-        />
-        <Row>
-          <label className="pr-3 basis-24">圖片尺寸</label>
-          <FormControl
-            sx={{ mr: 3, width: 120 }}
-            variant="standard"
+          <Button
+            variant="contained"
+            onClick={() => invokeInput()}
           >
-            <Input
-              name="width"
-              startAdornment={<InputAdornment position="start">寬</InputAdornment>}
-              endAdornment={<InputAdornment position="end">px</InputAdornment>}
-              value={params.width}
-              onChange={(e) => changeParam(e)}
-            />
-          </FormControl>
-          <FormControl
-            sx={{ width: 120 }}
-            variant="standard"
-          >
-            <Input
-              name="height"
-              startAdornment={<InputAdornment position="start">高</InputAdornment>}
-              endAdornment={<InputAdornment position="end">px</InputAdornment>}
-              value={params.height}
-              onChange={(e) => changeParam(e)}
-            />
-          </FormControl>
-        </Row>
-      </section>
+            上傳
+          </Button>
+        </Grid>
+        <Grid>
+          <TextSetting
+            content={params.content}
+            fontFamily={params.fontFamily}
+            color={params.color}
+            changeSetting={changeParam}
+          />
+          <Row>
+            <label className="pr-3 basis-24">圖片尺寸</label>
+            <FormControl
+              sx={{ mr: 3, width: 120 }}
+              variant="standard"
+            >
+              <Input
+                name="width"
+                startAdornment={<InputAdornment position="start">寬</InputAdornment>}
+                endAdornment={<InputAdornment position="end">px</InputAdornment>}
+                value={params.width}
+                onChange={(e) => changeParam(e)}
+              />
+            </FormControl>
+            <FormControl
+              sx={{ width: 120 }}
+              variant="standard"
+            >
+              <Input
+                name="height"
+                startAdornment={<InputAdornment position="start">高</InputAdornment>}
+                endAdornment={<InputAdornment position="end">px</InputAdornment>}
+                value={params.height}
+                onChange={(e) => changeParam(e)}
+              />
+            </FormControl>
+          </Row>
+        </Grid>
+      </Grid>
     </Container>
   )
 }
