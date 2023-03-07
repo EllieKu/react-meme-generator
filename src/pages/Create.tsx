@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode, useState, useRef, useEffect } from "react"
+import React, { ChangeEvent, ReactNode, useState, useRef } from "react"
 import DraggableText from '../components/DraggableText'
 import DraggableImage from '../components/DraggableImage'
 import { Button, FormControl, Input, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
@@ -22,19 +22,14 @@ const config = {
   height: 200,
 }
 
-interface TextSettingProps extends Setting{
-  changeSetting: (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-  changeFont: (e:SelectChangeEvent) => void
-
-}
-
-type Setting = {
+type TextSettingProps = {
   content:string,
   fontFamily:string
   color:string,
+  changeSetting: (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => void
 }
 
-interface RowProps {
+type RowProps = {
   children: ReactNode,
 }
 
@@ -52,7 +47,6 @@ const TextSetting = (
     content,
     fontFamily,
     changeSetting,
-    changeFont
   }: TextSettingProps
 ) => {
 
@@ -61,7 +55,7 @@ const TextSetting = (
       <Row>
         <label className="pr-3 basis-24">內容</label>
         <TextField
-          id="param-content"
+          name="content"
           variant="standard"
           value={content}
           onChange={(e) => changeSetting(e)}
@@ -71,8 +65,9 @@ const TextSetting = (
         <label className="pr-3 basis-24">字型</label>
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <Select
+            name="fontFamily"
             value={fontFamily}
-            onChange={(e) => changeFont(e)}
+            onChange={(e) => changeSetting(e)}
             sx={{padding: 'unset'}}
           >
             {
@@ -89,7 +84,7 @@ const TextSetting = (
       <Row>
         <label className="pr-3 basis-24">顏色</label>
         <input
-          id="param-color"
+          name="color"
           type="color"
           value={color}
           onChange={(e) => changeSetting(e)}
@@ -121,46 +116,13 @@ export default function Create() {
     inputRef.current!.click()
   }
 
-  const changeFontFamily = (e: SelectChangeEvent) => {
-    const newParam = {
-      fontFamily: e.target.value
-    }
+  const changeParam = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
+    const { name, value } = e.target
 
-    setParams((prev) => {
-      return {
-        ...prev,
-        ...newParam
-      }
-    })
-  }
-
-  const changeParam = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    let newParam = {}
-
-    if (e.target.id === 'param-content') {
-      newParam = {
-        content: e.target.value
-      }
-    } else if (e.target.id === 'param-color') {
-      newParam = {
-        color: e.target.value
-      }
-    } else if (e.target.id === 'param-height') {
-      newParam = {
-        height: e.target.value
-      }
-    } else if (e.target.id === 'param-width') {
-      newParam = {
-        width: e.target.value
-      }
-    }
-
-    setParams((prev) => {
-      return {
-        ...prev,
-        ...newParam
-      }
-    })
+    setParams((prev) => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   return (
@@ -197,7 +159,6 @@ export default function Create() {
           fontFamily={params.fontFamily}
           color={params.color}
           changeSetting={changeParam}
-          changeFont={changeFontFamily}
         />
         <Row>
           <label className="pr-3 basis-24">圖片尺寸</label>
@@ -206,7 +167,7 @@ export default function Create() {
             variant="standard"
           >
             <Input
-              id="param-width"
+              name="width"
               startAdornment={<InputAdornment position="start">寬</InputAdornment>}
               endAdornment={<InputAdornment position="end">px</InputAdornment>}
               value={params.width}
@@ -218,7 +179,7 @@ export default function Create() {
             variant="standard"
           >
             <Input
-              id="param-height"
+              name="height"
               startAdornment={<InputAdornment position="start">高</InputAdornment>}
               endAdornment={<InputAdornment position="end">px</InputAdornment>}
               value={params.height}
