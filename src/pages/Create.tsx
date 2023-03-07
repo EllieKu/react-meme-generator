@@ -132,9 +132,16 @@ export default function Create() {
         paddingTop: '40px',
       }}
     >
-      <Grid container spacing={2}>
-        <Grid sm={10} md={6}>
-          <div className="box-border h-56 w-56 border-4 overflow-hidden relative">
+      <Grid container>
+        <Grid sm={10} md={6} mdOffset={1}>
+          <div
+            css={{
+              width: `${params.width}px`,
+              height: `${params.height}px`,
+              transition: 'all 0.3s ease-in-out',
+            }}
+            className="border-4 overflow-hidden relative"
+          >
             <DraggableImage value={imgSrc} />
             <DraggableText
               content={params.content}
@@ -157,7 +164,7 @@ export default function Create() {
             上傳
           </Button>
         </Grid>
-        <Grid>
+        <Grid mdOffset={1}>
           <TextSetting
             content={params.content}
             fontFamily={params.fontFamily}
