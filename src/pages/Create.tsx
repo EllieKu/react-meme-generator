@@ -1,11 +1,24 @@
-import { useState, useRef, ChangeEvent, useEffect } from "react"
+import React, { ChangeEvent, ReactNode, useState, useRef } from "react"
 import DraggableText from '../components/DraggableText'
 import DraggableImage from '../components/DraggableImage'
-import { FormControl, MenuItem, TextField } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  Input,
+  InputAdornment,
+  MenuItem,
+  Select,
+  Slider,
+  TextField
+} from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
+import Grid from '@mui/material/Unstable_Grid2';
 
 const config = {
   content: '範例文字',
+  color: '#000000',
   fontFamily: [
     {
       label: "微軟雅黑",
@@ -16,61 +29,61 @@ const config = {
       value: "cursive"
     },
   ],
-  color: '#000000'
-}
-interface TextSettingProps extends Setting{
-  changeText: (newSetting: Setting) => void
+  fontSize: 22,
+  width: 300,
+  height: 200,
 }
 
-type Setting = {
+type TextSettingProps = {
   content:string,
-  fontFamily:string
   color:string,
+  fontFamily:string,
+  fontSize:number,
+  changeSetting:(e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => void,
+  changeFontSize: (event: Event, value: number | number[]) => void
+}
+
+type RowProps = {
+  children: ReactNode,
+}
+
+const Row = ({ children }:RowProps) => {
+  return (
+    <div className="flex flex-row items-center mb-2">
+      {children}
+    </div>
+  )
 }
 
 const TextSetting = (
   {
-    color:colorProps,
-    content: contentProps,
-    fontFamily: fontFamilyProps,
-    changeText
+    color,
+    content,
+    fontFamily,
+    fontSize,
+    changeSetting,
+    changeFontSize,
   }: TextSettingProps
 ) => {
-  const [content, setContent] = useState(contentProps)
-  const [color, setColor] = useState(colorProps)
-  const [fontFamily, setFontFamily] = useState(fontFamilyProps);
-
-  const changeFontFamily = (event: SelectChangeEvent) => {
-    setFontFamily(event.target.value as string);
-  };
-
-  useEffect(() => {
-    changeText({
-      color,
-      content,
-      fontFamily,
-    })
-  }, [color, content, fontFamily])
 
   return (
-    <>
-      <div className="flex flex-row mb-2 items-center">
+    <Grid>
+      <Row>
         <label className="pr-3 basis-24">內容</label>
         <TextField
-          id="standard-basic"
+          name="content"
           variant="standard"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => changeSetting(e)}
         />
-      </div>
-      <div className="flex flex-row mb-2 items-center">
+      </Row>
+      <Row>
         <label className="pr-3 basis-24">字型</label>
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
+            name="fontFamily"
             value={fontFamily}
-            onChange={changeFontFamily}
+            onChange={(e) => changeSetting(e)}
             sx={{padding: 'unset'}}
           >
             {
@@ -83,25 +96,43 @@ const TextSetting = (
             }
           </Select>
         </FormControl>
-      </div>
-      <div className="flex flex-row mb-2">
+      </Row>
+      <Row>
         <label className="pr-3 basis-24">顏色</label>
         <input
+          name="color"
           type="color"
           value={color}
-          onChange={(e) => setColor(e.target.value)}
+          onChange={(e) => changeSetting(e)}
         />
-      </div>
-    </>
+      </Row>
+      <Row>
+        <label className="pr-3 basis-24">文字大小</label>
+        <Box sx={{ width: 200 }}>
+          <Slider
+            name="fontSize"
+            defaultValue={config.fontSize}
+            min={12}
+            max={40}
+            valueLabelDisplay="on"
+            onChange={changeFontSize}
+          >
+          </Slider>
+        </Box>
+      </Row>
+    </Grid>
   )
 }
 
 export default function Create() {
   const [imgSrc, setImgSrc] = useState("")
-  const [textSetting, setTextSetting] = useState({
+  const [params, setParams] = useState({
     content: config.content,
+    color: config.color,
     fontFamily: config.fontFamily[0].value,
-    color: config.color
+    fontSize: config.fontSize,
+    width: config.width,
+    height: config.height,
   })
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -116,20 +147,46 @@ export default function Create() {
     inputRef.current!.click()
   }
 
-  const changeTextSetting = (newSetting:Setting) => {
-    setTextSetting(newSetting)
+  const changeParam = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent ) => {
+    const { name, value } = e.target
+
+    setParams((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const changeFontSize = (event: Event, value: number | number[]) => {
+    setParams((prev) => ({
+      ...prev,
+      fontSize: value as number
+    }))
+
   }
 
   return (
-    <div className="container flex m-5">
-      <section>
-        <div className="box-border h-56 w-56 border-4 overflow-hidden static">
-          <div className="h-96 w-96 relative object-center">
+    <Container
+      maxWidth="lg"
+      sx={{
+        paddingTop: '40px',
+      }}
+    >
+      <Grid container>
+        <Grid sm={10} md={6} mdOffset={1}>
+          <div
+            css={{
+              width: `${params.width}px`,
+              height: `${params.height}px`,
+              transition: 'all 0.3s ease-in-out',
+            }}
+            className="border-4 overflow-hidden relative"
+          >
             <DraggableImage value={imgSrc} />
             <DraggableText
-              content={textSetting.content}
-              fontFamily={textSetting.fontFamily}
-              color={textSetting.color}
+              content={params.content}
+              fontFamily={params.fontFamily}
+              fontSize={params.fontSize}
+              color={params.color}
             />
           </div>
           <input
@@ -140,19 +197,51 @@ export default function Create() {
             onChange={(e) => upload(e)}
             style={{display: 'none'}}
           />
-        </div>
-        <button className="w-14 bg-500" onClick={() => invokeInput()}>
-          上傳
-        </button>
-      </section>
-      <section className="pr-4 pl-4 grow">
-        <TextSetting
-          content={textSetting.content}
-          fontFamily={textSetting.fontFamily}
-          color={textSetting.color}
-          changeText={changeTextSetting}
-        />
-      </section>
-    </div>
+          <Button
+            variant="contained"
+            onClick={() => invokeInput()}
+          >
+            上傳
+          </Button>
+        </Grid>
+        <Grid mdOffset={1}>
+          <TextSetting
+            content={params.content}
+            color={params.color}
+            fontFamily={params.fontFamily}
+            fontSize={params.fontSize}
+            changeSetting={changeParam}
+            changeFontSize={changeFontSize}
+          />
+          <Row>
+            <label className="pr-3 basis-24">圖片尺寸</label>
+            <FormControl
+              sx={{ mr: 3, width: 120 }}
+              variant="standard"
+            >
+              <Input
+                name="width"
+                startAdornment={<InputAdornment position="start">寬</InputAdornment>}
+                endAdornment={<InputAdornment position="end">px</InputAdornment>}
+                value={params.width}
+                onChange={(e) => changeParam(e)}
+              />
+            </FormControl>
+            <FormControl
+              sx={{ width: 120 }}
+              variant="standard"
+            >
+              <Input
+                name="height"
+                startAdornment={<InputAdornment position="start">高</InputAdornment>}
+                endAdornment={<InputAdornment position="end">px</InputAdornment>}
+                value={params.height}
+                onChange={(e) => changeParam(e)}
+              />
+            </FormControl>
+          </Row>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }

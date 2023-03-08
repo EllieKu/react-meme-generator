@@ -1,14 +1,15 @@
-import { useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import { css, jsx } from '@emotion/react'
 import Draggable from 'react-draggable'
 
 type DraggableTextProps = {
   content: string,
-  fontFamily:string
+  fontFamily:string,
+  fontSize:number,
   color:string,
 }
 
-export default function DraggableText({ content, fontFamily, color }: DraggableTextProps) {
+export default function DraggableText({ content, fontFamily, fontSize, color }: DraggableTextProps) {
   /* If running in React Strict mode, ReactDOM.findDOMNode() is deprecated.
    * https://github.com/react-grid-layout/react-draggable/blob/v4.4.2/lib/DraggableCore.js#L159-L171
    */
@@ -27,7 +28,6 @@ export default function DraggableText({ content, fontFamily, color }: DraggableT
 
   return (
     <Draggable
-      bounds="parent"
       nodeRef={nodeRef}
       onStart={() => onStart()}
       onStop={() => onStop()}
@@ -35,10 +35,11 @@ export default function DraggableText({ content, fontFamily, color }: DraggableT
       <span
         className="absolute cursor-move text"
         ref={nodeRef}
-        css={css`
-         color: ${colorProps};
-         font-family: ${fontFamily};
-        `}
+        css={{
+          color: `${colorProps}`,
+          fontFamily: `${fontFamily}`,
+          fontSize: `${fontSize}px`
+        }}
       >
         {content}
       </span>
