@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import Draggable from 'react-draggable'
 
 type DraggableImageProps = {
@@ -31,7 +31,6 @@ export default function DraggableImage({ value }: DraggableImageProps) {
 
   return (
     <Draggable
-      bounds="parent"
       nodeRef={nodeRef}
       onStart={() => onStart()}
       onStop={() => onStop()}
