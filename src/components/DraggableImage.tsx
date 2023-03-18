@@ -25,9 +25,6 @@ export default function DraggableImage({ value }: DraggableImageProps) {
     e.preventDefault()
   }
 
-  function loaded(): void {
-    window.URL.revokeObjectURL(value)
-  }
 
   return (
     <Draggable
@@ -36,11 +33,10 @@ export default function DraggableImage({ value }: DraggableImageProps) {
       onStop={() => onStop()}
     >
       <img
-        className="w-6/12 h-6/12 absolute"
+        className="absolute w-full"
         ref={nodeRef}
         src={value}
         onDragStart={(e) => preventDragHandler(e)}
-        onLoad={() => loaded()}
       />
     </Draggable>
   )

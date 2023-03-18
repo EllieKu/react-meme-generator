@@ -15,6 +15,8 @@ import {
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
+import Dialog from '../components/Dialog'
+import domToImage from 'dom-to-image'
 
 const config = {
   content: '範例文字',
@@ -134,6 +136,7 @@ export default function Create() {
     width: config.width,
     height: config.height,
   })
+  const [dialogVisible, setDialogVisible] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   function upload(event: ChangeEvent): void {
@@ -161,7 +164,27 @@ export default function Create() {
       ...prev,
       fontSize: value as number
     }))
+  }
 
+  const createMeme = () => {
+    if (!imgSrc) {
+      return setDialogVisible(true)
+    }
+    const imgNode = document.getElementById("meme") as HTMLElement
+    const config = {
+      width: params.width,
+      height: params.height
+    }
+    domToImage.toPng(imgNode, config)
+      .then((dataUrl:string) => {
+        const link = document.createElement('a');
+        link.download = 'my-image.png';
+        link.href = dataUrl;
+        link.click()
+      })
+      .catch((error:any) => {
+        console.error('oops, something went wrong!', error);
+      })
   }
 
   return (
@@ -179,15 +202,20 @@ export default function Create() {
               height: `${params.height}px`,
               transition: 'all 0.3s ease-in-out',
             }}
-            className="border-4 overflow-hidden relative"
+            className="border-4 relative box-content"
           >
-            <DraggableImage value={imgSrc} />
-            <DraggableText
-              content={params.content}
-              fontFamily={params.fontFamily}
-              fontSize={params.fontSize}
-              color={params.color}
-            />
+            <div
+              className="h-full w-full relative overflow-hidden"
+              id="meme"
+            >
+              <DraggableImage value={imgSrc} />
+              <DraggableText
+                content={params.content}
+                fontFamily={params.fontFamily}
+                fontSize={params.fontSize}
+                color={params.color}
+              />
+            </div>
           </div>
           <input
             type="file"
@@ -201,10 +229,17 @@ export default function Create() {
             variant="contained"
             onClick={() => invokeInput()}
           >
-            上傳
+            上傳圖片
+          </Button>
+          <Button
+            variant="contained"
+            onClick={createMeme}
+          >
+            產生梗圖
           </Button>
         </Grid>
         <Grid mdOffset={1}>
+        {/* <Grid xs={6}> */}
           <TextSetting
             content={params.content}
             color={params.color}
@@ -242,6 +277,12 @@ export default function Create() {
           </Row>
         </Grid>
       </Grid>
+      <Dialog
+        title={''}
+        content={'請先上傳圖片'}
+        open={dialogVisible}
+        confirm={(e) => setDialogVisible(e)}
+      />
     </Container>
   )
 }
