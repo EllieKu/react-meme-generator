@@ -1,5 +1,5 @@
-import Draggable from 'react-draggable'
 import React, { useState, useRef, DragEvent, WheelEvent } from "react"
+import Draggable from "react-draggable"
 
 type DraggableImageProps = {
   value: string
@@ -13,7 +13,7 @@ export default function DraggableImage({ value }: DraggableImageProps) {
   const [activeDrags, setActiveDrags] = useState(0)
   const [src, setSrc] = useState("")
   const [scale, setScale] = useState(1)
-  
+
   const onStart = () => {
     setActiveDrags(prev => prev + 1)
   }
@@ -26,7 +26,7 @@ export default function DraggableImage({ value }: DraggableImageProps) {
     e.preventDefault()
   }
 
-  const changeScale = (e:WheelEvent<HTMLImageElement>) => {
+  const changeScale = (e: WheelEvent<HTMLImageElement>) => {
     const amount = e.deltaY > 0 ? -0.05 : 0.05
     setScale((prev) => {
       if (prev + amount <= 0.1) {
@@ -48,7 +48,7 @@ export default function DraggableImage({ value }: DraggableImageProps) {
           src={value}
           onDragStart={preventDragHandler}
           onWheel={changeScale}
-          style={{transform: `scale(${scale})`}}
+          style={{ transform: `scale(${scale})` }}
         />
       </div>
     </Draggable>

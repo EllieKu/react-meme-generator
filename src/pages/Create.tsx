@@ -1,6 +1,7 @@
-import React, { ChangeEvent, ReactNode, useState, useRef } from "react"
-import DraggableText from '../components/DraggableText'
-import DraggableImage from '../components/DraggableImage'
+import React, { ChangeEvent, ReactNode, useState, useRef } from "react";
+import DraggableText from '../components/DraggableText';
+import DraggableImage from '../components/DraggableImage';
+import Dialog from '../components/Dialog';
 import {
   Box,
   Button,
@@ -15,8 +16,7 @@ import {
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
-import Dialog from '../components/Dialog'
-import domToImage from 'dom-to-image'
+import domToImage from 'dom-to-image';
 
 const config = {
   content: '範例文字',
@@ -37,19 +37,19 @@ const config = {
 }
 
 type TextSettingProps = {
-  content:string,
-  color:string,
-  fontFamily:string,
-  fontSize:number,
-  changeSetting:(e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => void,
-  changeFontSize: (event: Event, value: number | number[]) => void
-}
+  content: string;
+  color: string;
+  fontFamily: string;
+  fontSize: number;
+  changeSetting: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent ) => void;
+  changeFontSize: (event: Event, value: number | number[]) => void;
+};
 
 type RowProps = {
-  children: ReactNode,
-}
+  children: ReactNode;
+};
 
-const Row = ({ children }:RowProps) => {
+const Row = ({ children }: RowProps) => {
   return (
     <div className="flex flex-row items-center mb-2">
       {children}
@@ -57,16 +57,14 @@ const Row = ({ children }:RowProps) => {
   )
 }
 
-const TextSetting = (
-  {
-    color,
-    content,
-    fontFamily,
-    fontSize,
-    changeSetting,
-    changeFontSize,
-  }: TextSettingProps
-) => {
+const TextSetting = ({
+  color,
+  content,
+  fontFamily,
+  fontSize,
+  changeSetting,
+  changeFontSize,
+}: TextSettingProps) => {
 
   return (
     <Grid>
@@ -88,14 +86,12 @@ const TextSetting = (
             onChange={(e) => changeSetting(e)}
             sx={{padding: 'unset'}}
           >
-            {
-              config.fontFamily.map(el => (
-                <MenuItem
-                  key={el.value}
-                  value={el.value}>{el.label}
-                </MenuItem>
-              ))
-            }
+            {config.fontFamily.map(el => (
+              <MenuItem
+                key={el.value}
+                value={el.value}>{el.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Row>
@@ -127,7 +123,7 @@ const TextSetting = (
 }
 
 export default function Create() {
-  const [imgSrc, setImgSrc] = useState("")
+  const [imgSrc, setImgSrc] = useState<string>("")
   const [params, setParams] = useState({
     content: config.content,
     color: config.color,
