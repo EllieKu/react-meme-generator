@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, WheelEvent } from "react"
 import Draggable from 'react-draggable'
 
 type DraggableImageProps = {
@@ -12,6 +12,7 @@ export default function DraggableImage({ value }: DraggableImageProps) {
   const nodeRef = useRef(null);
   const [activeDrags, setActiveDrags] = useState(0)
   const [src, setSrc] = useState("")
+  const [scale, setScale] = useState(1)
   
   const onStart = () => {
     setActiveDrags(prev => prev += 1)
@@ -25,6 +26,15 @@ export default function DraggableImage({ value }: DraggableImageProps) {
     e.preventDefault()
   }
 
+  const changeScale = (e:WheelEvent<HTMLImageElement>) => {
+    const amount = e.deltaY > 0 ? -0.05 : 0.05
+    setScale((prev) => {
+      if (prev + amount <= 0.1) {
+        return prev
+      }
+      return prev += amount
+    })
+  }
 
   return (
     <Draggable
@@ -32,12 +42,15 @@ export default function DraggableImage({ value }: DraggableImageProps) {
       onStart={() => onStart()}
       onStop={() => onStop()}
     >
-      <img
-        className="absolute w-full"
-        ref={nodeRef}
-        src={value}
-        onDragStart={(e) => preventDragHandler(e)}
-      />
+      <div ref={nodeRef}>
+        <img
+          className="absolute"
+          src={value}
+          onDragStart={preventDragHandler}
+          onWheel={changeScale}
+          style={{transform: `scale(${scale})`}}
+        />
+      </div>
     </Draggable>
   )
 }
