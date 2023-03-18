@@ -61,8 +61,8 @@ export default function Create() {
   const [dialogVisible, setDialogVisible] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  function upload(event: ChangeEvent): void {
-    const fileList = (event.target as HTMLInputElement).files as FileList
+  function upload(event: ChangeEvent<HTMLInputElement>): void {
+    const fileList = event.target.files as FileList
     const file: File = fileList[0]
 
     setImgSrc(window.URL.createObjectURL(file))
@@ -144,12 +144,12 @@ export default function Create() {
             id="fileItem"
             accept="image/*"
             ref={inputRef}
-            onChange={(e) => upload(e)}
+            onChange={upload}
             style={{display: 'none'}}
           />
           <Button
             variant="contained"
-            onClick={() => invokeInput()}
+            onClick={invokeInput}
           >
             上傳圖片
           </Button>
@@ -167,7 +167,7 @@ export default function Create() {
               name="content"
               variant="standard"
               value={params.content}
-              onChange={(e) => changeParam(e)}
+              onChange={changeParam}
             />
           </Row>
           <Row>
@@ -176,7 +176,7 @@ export default function Create() {
               name="color"
               type="color"
               value={params.color}
-              onChange={(e) => changeParam(e)}
+              onChange={changeParam}
             />
           </Row>
           <Row>
@@ -185,7 +185,7 @@ export default function Create() {
               <Select
                 name="fontFamily"
                 value={params.fontFamily}
-                onChange={(e) => changeParam(e)}
+                onChange={changeParam}
                 sx={{padding: 'unset'}}
               >
                 {config.fontFamily.map(el => (
@@ -222,7 +222,7 @@ export default function Create() {
                 startAdornment={<InputAdornment position="start">寬</InputAdornment>}
                 endAdornment={<InputAdornment position="end">px</InputAdornment>}
                 value={params.width}
-                onChange={(e) => changeParam(e)}
+                onChange={changeParam}
               />
             </FormControl>
             <FormControl
@@ -234,7 +234,7 @@ export default function Create() {
                 startAdornment={<InputAdornment position="start">高</InputAdornment>}
                 endAdornment={<InputAdornment position="end">px</InputAdornment>}
                 value={params.height}
-                onChange={(e) => changeParam(e)}
+                onChange={changeParam}
               />
             </FormControl>
           </Row>
@@ -244,7 +244,7 @@ export default function Create() {
         title={''}
         content={'請先上傳圖片'}
         open={dialogVisible}
-        confirm={(e) => setDialogVisible(e)}
+        confirm={setDialogVisible}
       />
     </Container>
   )
