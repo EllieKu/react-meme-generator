@@ -239,7 +239,6 @@ export default function Create() {
           </Button>
         </Grid>
         <Grid mdOffset={1}>
-        {/* <Grid xs={6}> */}
           <TextSetting
             content={params.content}
             color={params.color}
