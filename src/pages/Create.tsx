@@ -36,15 +36,6 @@ const config = {
   height: 200,
 }
 
-type TextSettingProps = {
-  content: string;
-  color: string;
-  fontFamily: string;
-  fontSize: number;
-  changeSetting: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent ) => void;
-  changeFontSize: (event: Event, value: number | number[]) => void;
-};
-
 type RowProps = {
   children: ReactNode;
 };
@@ -54,71 +45,6 @@ const Row = ({ children }: RowProps) => {
     <div className="flex flex-row items-center mb-2">
       {children}
     </div>
-  )
-}
-
-const TextSetting = ({
-  color,
-  content,
-  fontFamily,
-  fontSize,
-  changeSetting,
-  changeFontSize,
-}: TextSettingProps) => {
-
-  return (
-    <Grid>
-      <Row>
-        <label className="pr-3 basis-24">內容</label>
-        <TextField
-          name="content"
-          variant="standard"
-          value={content}
-          onChange={(e) => changeSetting(e)}
-        />
-      </Row>
-      <Row>
-        <label className="pr-3 basis-24">字型</label>
-        <FormControl variant="standard" sx={{ minWidth: 120 }}>
-          <Select
-            name="fontFamily"
-            value={fontFamily}
-            onChange={(e) => changeSetting(e)}
-            sx={{padding: 'unset'}}
-          >
-            {config.fontFamily.map(el => (
-              <MenuItem
-                key={el.value}
-                value={el.value}>{el.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Row>
-      <Row>
-        <label className="pr-3 basis-24">顏色</label>
-        <input
-          name="color"
-          type="color"
-          value={color}
-          onChange={(e) => changeSetting(e)}
-        />
-      </Row>
-      <Row>
-        <label className="pr-3 basis-24">文字大小</label>
-        <Box sx={{ width: 200 }}>
-          <Slider
-            name="fontSize"
-            defaultValue={config.fontSize}
-            min={12}
-            max={40}
-            valueLabelDisplay="on"
-            onChange={changeFontSize}
-          >
-          </Slider>
-        </Box>
-      </Row>
-    </Grid>
   )
 }
 
@@ -235,14 +161,56 @@ export default function Create() {
           </Button>
         </Grid>
         <Grid mdOffset={1}>
-          <TextSetting
-            content={params.content}
-            color={params.color}
-            fontFamily={params.fontFamily}
-            fontSize={params.fontSize}
-            changeSetting={changeParam}
-            changeFontSize={changeFontSize}
-          />
+          <Row>
+            <label className="pr-3 basis-24">內容</label>
+            <TextField
+              name="content"
+              variant="standard"
+              value={params.content}
+              onChange={(e) => changeParam(e)}
+            />
+          </Row>
+          <Row>
+            <label className="pr-3 basis-24">顏色</label>
+            <input
+              name="color"
+              type="color"
+              value={params.color}
+              onChange={(e) => changeParam(e)}
+            />
+          </Row>
+          <Row>
+            <label className="pr-3 basis-24">字型</label>
+            <FormControl variant="standard" sx={{ minWidth: 120 }}>
+              <Select
+                name="fontFamily"
+                value={params.fontFamily}
+                onChange={(e) => changeParam(e)}
+                sx={{padding: 'unset'}}
+              >
+                {config.fontFamily.map(el => (
+                  <MenuItem
+                    key={el.value}
+                    value={el.value}>{el.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Row>
+          <Row>
+            <label className="pr-3 basis-24">文字大小</label>
+            <Box sx={{ width: 200 }}>
+              <Slider
+                name="fontSize"
+                defaultValue={config.fontSize}
+                min={12}
+                max={40}
+                valueLabelDisplay="on"
+                onChange={changeFontSize}
+              >
+              </Slider>
+            </Box>
+          </Row>
           <Row>
             <label className="pr-3 basis-24">圖片尺寸</label>
             <FormControl
