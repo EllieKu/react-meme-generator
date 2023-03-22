@@ -74,10 +74,15 @@ export default function Create() {
 
   const changeParam = (e:ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent ) => {
     const { name, value } = e.target
+    let newValue = value
+
+    if (name === 'width' || name === 'height' ) {
+      newValue = value.replace(/[^0-9]/g, '')
+    }
 
     setParams((prev) => ({
       ...prev,
-      [name]: value
+      [name]: newValue
     }))
   }
 
