@@ -1,18 +1,19 @@
 import React from 'react';
 import { Container, ImageList, ImageListItem, Tooltip, IconButton, Box } from '@mui/material'
 import { StarOutline } from '@mui/icons-material';
+
 // full of icons: https://mui.com/material-ui/material-icons/
 
 export default function Material() {
-  let img_list: string[] = []
+  let imgList: string[] = []
   let index: number = 0
-  let index_last: number = 63
+  let indexLast: number = 63
   let img: string = ''
   const BASE_URL = '/src/assets/images/yinwuBrothers/jpg/'
 
-  while (index <= index_last ) {
+  while (index <= indexLast ) {
     img = `${BASE_URL}${index}.jpg`
-    img_list.push(img)
+    imgList.push(img)
     index += 1
   }
 
@@ -24,7 +25,7 @@ export default function Material() {
       }}
     >
       <ImageList variant="masonry" cols={6} gap={8}>
-        {img_list.map((img) => (
+        {imgList.map((img) => (
           <ImageListItem key={img}>
             <Box
               sx={{
