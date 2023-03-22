@@ -42,7 +42,7 @@ type RowProps = {
 
 const Row = ({ children }: RowProps) => {
   return (
-    <div className="flex flex-row items-center mb-2">
+    <div className="flex flex-row items-center mb-2 h-9">
       {children}
     </div>
   )
@@ -117,7 +117,7 @@ export default function Create() {
       }}
     >
       <Grid container>
-        <Grid sm={10} md={6} mdOffset={1}>
+        <Grid xsOffset={1}>
           <div
             css={{
               width: `${params.width}px`,
@@ -147,20 +147,23 @@ export default function Create() {
             onChange={upload}
             style={{display: 'none'}}
           />
-          <Button
-            variant="contained"
-            onClick={invokeInput}
-          >
-            上傳圖片
-          </Button>
-          <Button
-            variant="contained"
-            onClick={createMeme}
-          >
-            產生梗圖
-          </Button>
+          <div className="mt-4">
+            <Button
+              variant="contained"
+              onClick={invokeInput}
+              sx={{ marginRight: '10px' }}
+            >
+              上傳圖片
+            </Button>
+            <Button
+              variant="contained"
+              onClick={createMeme}
+            >
+              產生梗圖
+            </Button>
+          </div>
         </Grid>
-        <Grid mdOffset={1}>
+        <Grid xsOffset={1}>
           <Row>
             <label className="pr-3 basis-24">內容</label>
             <TextField
