@@ -4,18 +4,25 @@ import { StarOutline } from '@mui/icons-material';
 
 // full of icons: https://mui.com/material-ui/material-icons/
 
-export default function Material() {
-  let imgList: string[] = []
-  let index: number = 0
-  let indexLast: number = 63
-  let img: string = ''
-  const BASE_URL = '/src/assets/images/yinwuBrothers/jpg/'
+interface ImageProps {
+  start: number;
+  end: number;
+  baseURL: string;
+}
 
-  while (index <= indexLast ) {
-    img = `${BASE_URL}${index}.jpg`
-    imgList.push(img)
-    index += 1
+const generateImageList = ({ start, end, baseURL }: ImageProps) => {
+  const imgList: string[] = [];
+  for (let index = start; index <= end; index += 1) {
+    const img = `${baseURL}${index}.jpg`;
+    imgList.push(img);
   }
+  return imgList;
+}
+
+const BASE_URL = '/src/assets/images/yinwuBrothers/jpg/'
+
+export default function Material() {
+  const imgList = generateImageList({ start: 0, end: 63, baseURL: BASE_URL })
 
   return (
     <Container

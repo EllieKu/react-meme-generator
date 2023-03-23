@@ -15,37 +15,37 @@ type DialogProps = {
   confirm: (isOpen: boolean) => void;
 };
 
-export default function BaseDialog({
+const BaseDialog = ({
   title,
   content,
   open,
   confirm,
-}: DialogProps) {
+}: DialogProps) => {
   const handleClose = (): void => {
     confirm(false)
   }
 
   return (
-    <div>
-      <Dialog
-        open={open}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        {title.length > 0 && (
-          <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-        )}
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {content}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            確定
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+    <Dialog
+      open={open}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      {title.length > 0 && (
+        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+      )}
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          {content}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} autoFocus>
+          確定
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
+
+export default BaseDialog
