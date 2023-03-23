@@ -249,7 +249,6 @@ export default function Create() {
         </Grid>
       </Grid>
       <Dialog
-        title={''}
         content={'請先上傳圖片'}
         open={dialogVisible}
         confirm={setDialogVisible}

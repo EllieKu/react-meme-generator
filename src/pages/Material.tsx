@@ -1,5 +1,11 @@
-import React from 'react';
-import { Container, ImageList, ImageListItem, Tooltip, IconButton, Box } from '@mui/material'
+import React, { FC, useState } from 'react';
+import {
+  Container,
+  ImageList,
+  ImageListItem,
+  Box,
+} from '@mui/material';
+import BaseDialog from '../components/Dialog';
 
 interface ImageProps {
   start: number;
@@ -18,8 +24,15 @@ const generateImageList = ({ start, end, baseURL }: ImageProps) => {
 
 const BASE_URL = '/src/assets/images/yinwuBrothers/jpg/'
 
-export default function Material() {
+const Material: FC = () => {
   const imgList = generateImageList({ start: 0, end: 63, baseURL: BASE_URL })
+  const [dialogVisible, setDialogVisible] = useState(false)
+  const [selectedImage, setSelectedImage] = useState('')
+
+  const showImage = (img: string) => {
+    setSelectedImage(img)
+    setDialogVisible(true)
+  }
 
   return (
     <Container
@@ -37,8 +50,8 @@ export default function Material() {
           <ImageListItem key={img}>
             <Box
               component="img"
-              src={`${img}?w=161&crop&auto=format`}
-              srcSet={`${img}?w=161&&auto=format&dpr=2 2x`}
+              src={img}
+              srcSet={img}
               alt={img}
               loading="lazy"
               sx={{
@@ -50,10 +63,24 @@ export default function Material() {
                   transform: 'scale(1.1)',
                 },
               }}
+              onClick={() => showImage(img)}
             />
           </ImageListItem>
         ))}
       </ImageList>
+      <BaseDialog
+        content={
+          <Box
+            component="img"
+            src={selectedImage}
+            alt={selectedImage}
+          />
+        }
+        open={dialogVisible}
+        confirm={() => setDialogVisible(false)}
+      />
     </Container>
   )
 }
+
+export default Material
